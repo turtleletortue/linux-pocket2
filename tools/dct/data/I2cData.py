@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/python3
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2016 MediaTek Inc.
@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See http://www.gnu.org/licenses/gpl-2.0.html for more details.
 
-class BusData:
+from builtins import object
+class BusData(object):
     def __init__(self):
         self.__speed = ''
         self.__enable = False
@@ -29,7 +30,7 @@ class BusData:
     def get_enable(self):
         return self.__enable
 
-class I2cData:
+class I2cData(object):
     _i2c_count = 0
     _channel_count = 0
     _busList = []

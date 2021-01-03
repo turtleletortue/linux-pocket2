@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/python3
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2016 MediaTek Inc.
@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See http://www.gnu.org/licenses/gpl-2.0.html for more details.
 
-class EintData:
+from builtins import object
+class EintData(object):
     _count = 0
     _debounce_enable_list = ['CUST_EINT_DEBOUNCE_DISABLE', 'CUST_EINT_DEBOUNCE_ENABLE']
     _map_table = {}
@@ -69,7 +70,7 @@ class EintData:
     def get_modeName(gpio_num, mode_idx):
         key = 'gpio%s' %(gpio_num)
 
-        if key in EintData._mode_map.keys():
+        if key in list(EintData._mode_map.keys()):
             list =  EintData._mode_map[key]
             if mode_idx < len(list) and mode_idx >= 0:
                 return list[mode_idx]
@@ -78,7 +79,7 @@ class EintData:
 
     @staticmethod
     def set_modeMap(map):
-        for (key, value) in map.items():
+        for (key, value) in list(map.items()):
             list = []
             for item in value:
                 list.append(item[6:len(item)-1])
@@ -93,7 +94,7 @@ class EintData:
     @staticmethod
     def get_gpioNum(num):
         if len(EintData._map_table):
-            for (key,value) in EintData._map_table.items():
+            for (key,value) in list(EintData._map_table.items()):
                 if num == value:
                     return key
 

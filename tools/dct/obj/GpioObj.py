@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/python3
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2016 MediaTek Inc.
@@ -12,18 +12,24 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See http://www.gnu.org/licenses/gpl-2.0.html for more details.
 
+#from __future__ import absolute_import
+#from past.builtins import cmp
+#from future import standard_library
+#standard_library.install_aliases()
+from builtins import str
+from builtins import range
 import re
 import os
 import sys
 import string
-import ConfigParser
+import configparser
 import xml.dom.minidom
 
 
 from data.GpioData import GpioData
 from data.EintData import EintData
-from ModuleObj import ModuleObj
-import ChipObj
+from obj.ModuleObj import ModuleObj
+from . import ChipObj
 from utility.util import compare
 from utility.util import sorted_key
 from utility.util import log
@@ -40,7 +46,7 @@ class GpioObj(ModuleObj):
         self.__drvCur = False
 
     def get_cfgInfo(self):
-        cp = ConfigParser.ConfigParser(allow_no_value=True)
+        cp = configparser.ConfigParser(allow_no_value=True)
         cp.read(ModuleObj.get_cmpPath())
 
         # get GPIO_FREQ section
@@ -279,7 +285,7 @@ class GpioObj(ModuleObj):
     def fill_hFile(self):
         gen_str = '''//Configuration for GPIO SMT(Schmidt Trigger) Group output start\n'''
         temp_list = []
-        for key in sorted_key(ModuleObj.get_data(self).keys()):
+        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
         #for value in ModuleObj.get_data(self).values():
             value = ModuleObj.get_data(self)[key]
             num = value.get_smtNum()
@@ -294,7 +300,7 @@ class GpioObj(ModuleObj):
 
         gen_str += '''\n\n'''
 
-        sorted_list = sorted(ModuleObj.get_data(self).keys(), key = compare)
+        sorted_list = sorted(list(ModuleObj.get_data(self).keys()), key = compare)
 
         for key in sorted_list:
             value = ModuleObj.get_data(self)[key]
@@ -384,7 +390,7 @@ class GpioObj(ModuleObj):
         gen_str = ''
         #sorted_list = sorted(ModuleObj.get_data(self).keys(), key = compare)
 
-        for key in sorted_key(ModuleObj.get_data(self).keys()):
+        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
         #for key in sorted_list:
             value = ModuleObj.get_data(self)[key]
             for varName in value.get_varNames():
@@ -394,7 +400,7 @@ class GpioObj(ModuleObj):
                     gen_str += '''#define %s_M_EINT\t\tGPIO_MODE_00\n''' %(varName)
 
                 temp_list = []
-                for item in GpioData._specMap.keys():
+                for item in list(GpioData._specMap.keys()):
                     regExp = '[_A-Z0-9:]*%s[_A-Z0-9:]*' %(item.upper())
                     pat = re.compile(regExp)
                     for i in range(0, GpioData._modNum):
@@ -441,7 +447,7 @@ class GpioObj(ModuleObj):
                     if pat.match(mode):
                         gen_str += '''#define %s_CLK\t\tCLK_OUT%s\n''' %(varName, mode[4:])
                         temp = ''
-                        if varName in GpioData._freqMap.keys():
+                        if varName in list(GpioData._freqMap.keys()):
                             temp = GpioData._freqMap[varName]
                         else:
                             temp = 'GPIO_CLKSRC_NONE'
@@ -457,7 +463,7 @@ class GpioObj(ModuleObj):
         gen_str += '''\tgpio_pins_default: gpiodef{\n\t};\n\n'''
 
         #sorted_list = sorted(ModuleObj.get_data(self).keys(), key = compare)
-        for key in sorted_key(ModuleObj.get_data(self).keys()):
+        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
         #for key in sorted_list:
             value = ModuleObj.get_data(self)[key]
             gen_str += '''\t%s: gpio@%s {\n''' %(key.lower(), key[4:])
@@ -528,7 +534,7 @@ class GpioObj(ModuleObj):
     def fill_pinfunc_hFile(self):
         gen_str = '''#include \"mt65xx.h\"\n\n'''
         #sorted_list = sorted(ModuleObj.get_data(self).keys(), key = compare)
-        for key in sorted_key(ModuleObj.get_data(self).keys()):
+        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
         #for key in sorted_list:
             value = ModuleObj.get_data(self)[key]
             for i in range(0, GpioData._modNum):
@@ -555,7 +561,7 @@ class GpioObj(ModuleObj):
         gen_str += '''static const struct mtk_desc_pin mtk_pins_%s[] = {\n''' %(ModuleObj.get_chipId().lower())
 
         #sorted_list = sorted(ModuleObj.get_data(self).keys(), key = compare)
-        for key in sorted_key(ModuleObj.get_data(self).keys()):
+        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
         #for key in sorted_list:
             value = ModuleObj.get_data(self)[key]
             gen_str += '''\tMTK_PIN(\n'''
@@ -583,7 +589,7 @@ class GpioObj(ModuleObj):
         gen_str = '''&gpio_usage_mapping {\n'''
 
         #sorted_list = sorted(ModuleObj.get_data(self).keys(), key = compare)
-        for key in sorted_key(ModuleObj.get_data(self).keys()):
+        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
         #for key in sorted_list:
             value = ModuleObj.get_data(self)[key]
             for varName in value.get_varNames():
@@ -631,7 +637,7 @@ class GpioObj_MT6759(GpioObj):
         gen_str = '''&gpio_usage_mapping {\n'''
 
         #sorted_list = sorted(ModuleObj.get_data(self).keys(), key = compare)
-        for key in sorted_key(ModuleObj.get_data(self).keys()):
+        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
         #for key in sorted_list:
             value = ModuleObj.get_data(self)[key]
             for varName in value.get_varNames():

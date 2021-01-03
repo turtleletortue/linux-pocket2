@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/python3
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2016 MediaTek Inc.
@@ -12,6 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See http://www.gnu.org/licenses/gpl-2.0.html for more details.
 
+#from __future__ import print_function
+from builtins import object
 import re
 import string
 
@@ -20,18 +22,18 @@ LEVEL_INFO = '[DCT_INFO]: '
 LEVEL_WARN = '[DCT_WARNING]: '
 LEVEL_ERROR = '[DCT_ERROR]: '
 
-class LogLevel:
+class LogLevel(object):
     info = 1
     warn = 2
     error = 3
 
 def log(level, msg):
     if level == LogLevel.info:
-        print LEVEL_INFO + msg
+        print(LEVEL_INFO + msg)
     elif level == LogLevel.warn:
-        print LEVEL_WARN + msg
+        print(LEVEL_WARN + msg)
     elif level == LogLevel.error:
-        print LEVEL_ERROR + msg
+        print(LEVEL_ERROR + msg)
 
 def compare(value):
     lst = re.findall(r'\d+', value)

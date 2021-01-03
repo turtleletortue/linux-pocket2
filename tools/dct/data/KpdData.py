@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/python3
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2016 MediaTek Inc.
@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See http://www.gnu.org/licenses/gpl-2.0.html for more details.
 
-class KpdData:
+from builtins import object
+class KpdData(object):
     _row = -1
     _col = -1
     _row_ext = -1
@@ -152,7 +153,7 @@ class KpdData:
 
     @staticmethod
     def get_keyVal(key):
-        if key in KpdData._keyValueMap.keys():
+        if key in list(KpdData._keyValueMap.keys()):
             return KpdData._keyValueMap[key]
 
         return 0

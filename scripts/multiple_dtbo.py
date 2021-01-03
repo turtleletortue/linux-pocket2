@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2016 MediaTek Inc.
@@ -12,6 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See http://www.gnu.org/licenses/gpl-2.0.html for more details.
 
+#from __future__ import print_function
+from builtins import range
 import os
 import sys
 import struct
@@ -52,12 +54,13 @@ def write_header(output_file, input_file, dtb_list):
 		head[8 + i] = struct.pack('I', offset)
 		i = i + 1
 
-	with open(output_file, 'w') as fo:
+	with open(output_file, 'wb') as fo:
 		for item in head:
-			fo.write("%s" % item)
-		with open(input_file, 'r') as fi:
+			fo.write(item)
+		with open(input_file, 'rb') as fi:
 			for line in fi.readlines():
-				fo.write(line)
+			    rawbytes = fi.read()
+			    fo.write(rawbytes)
 			fi.close
 		fo.close
 

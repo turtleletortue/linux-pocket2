@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/python3
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2016 MediaTek Inc.
@@ -12,12 +12,16 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See http://www.gnu.org/licenses/gpl-2.0.html for more details.
 
+#from __future__ import absolute_import
+#from past.builtins import cmp
+#from future import standard_library
+#standard_library.install_aliases()
 import re
 import string
-import ConfigParser
+import configparser
 import xml.dom.minidom
 
-from ModuleObj import ModuleObj
+from obj.ModuleObj import ModuleObj
 from utility.util import LogLevel
 from utility.util import log
 from data.KpdData import KpdData
@@ -29,7 +33,7 @@ class KpdObj(ModuleObj):
 
 
     def get_cfgInfo(self):
-        cp = ConfigParser.ConfigParser(allow_no_value=True)
+        cp = configparser.ConfigParser(allow_no_value=True)
         cp.read(ModuleObj.get_cmpPath())
 
         ops = cp.options('Key_definition')
@@ -219,7 +223,7 @@ class KpdObj(ModuleObj):
         gen_str += '''/****************Uboot Customation**************************/\n'''
         gen_str += '''/***********************************************************/\n'''
 
-        for (key, value) in KpdData.get_modeKeys().items():
+        for (key, value) in list(KpdData.get_modeKeys().items()):
             if cmp(value, 'NC') != 0:
                 idx = self.get_matrixIdx(value)
                 #idx = KpdData.get_matrix().index(value)
@@ -289,7 +293,7 @@ class KpdObj(ModuleObj):
                 continue
             gen_str += '''\tmediatek,kpd-hw-dl-key%d = <%s>;\n''' %(KpdData.get_downloadKeys().index(key), self.get_matrixIdx(key))
 
-        for (key, value) in KpdData.get_modeKeys().items():
+        for (key, value) in list(KpdData.get_modeKeys().items()):
             if cmp(value, 'NC') == 0:
                 continue
             gen_str += '''\tmediatek,kpd-hw-%s-key = <%d>;\n''' %(key.lower(), self.get_matrixIdx(value))
